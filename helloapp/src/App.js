@@ -1,11 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import Third from './component/Third';
 function App() {
-  return (
+   return (
     <div className="App">
-     <h1 align="center">Hello React!!!!!</h1>
-    <center> <img src={logo} alt="logo" width="150px" height="150px"/></center>
+      <h1 align="center">Props Example</h1>
+    
+         <Third />
     </div>
   );
 }
