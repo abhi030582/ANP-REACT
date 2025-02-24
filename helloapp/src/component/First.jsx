@@ -8,6 +8,7 @@ function First(props) {
   return (
     <div>
         <h2>First Component</h2>
+        <hr />
         {data.map((user, index) => (
         <div key={index}>
           <p>ID: {user.id}</p>

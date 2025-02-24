@@ -64,6 +64,7 @@ function Second(props) {
         <h2>Second Component</h2>
        
       <First users={user} fun={print} />
+
     </div>
   )
 }

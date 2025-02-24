@@ -6,6 +6,7 @@ function Third(props) {
     <div>
         <h2>Third Component</h2>
       <Second msg="Message from Third component" />
+      
     </div>
   )
 }
