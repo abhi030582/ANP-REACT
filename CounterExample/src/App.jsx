@@ -4,25 +4,25 @@ import ProductList from './component/ProductList'
 import Counter from './component/Counter'
 import Login from './component/Login'
 import UserLogin from './component/Login/UserLogin'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-//import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './App.css'
 
 function App() {
   return (
     <>
-   /
+   
 {/* <UserInfo />
 <hr color="red"/>
 <ProductList /> */}
 
 {/* <Login /> */}
 
-<Router>
+<BrowserRouter>
       <Routes>
         <Route path="/" element={<UserLogin />} />
         <Route path="/productlist" element={<ProductList />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   
      
     </>
