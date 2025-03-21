@@ -1,0 +1,20 @@
+.books {
+    background-color: #FFF;
+    padding: 10px;
+    cursor: pointer;
+    border:2px solid rgb(119, 0, 255);
+    border-radius: 30px;
+}
+
+.price {
+    color: red;
+}
+
+.buy {
+    color: red;
+    font-weight: bold;
+}
+
+.buy:hover {
+    color: red !important;
+}

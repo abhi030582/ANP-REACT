@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+  }
+  
+  /* Search Container */
+  .search-container {
+    position: relative;
+    margin: 50px auto;
+    max-width: 300px;
+  }
+  
+  /* Search Input */
+  .search-input {
+    width: 100%;
+    padding: 10px 40px 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+    outline: none;
+  }
+  
+  /* Search Icon */
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #999;
+  }
