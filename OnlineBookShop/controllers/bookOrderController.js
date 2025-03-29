@@ -1,27 +1,45 @@
 
 import BookOrder from "../models/BookOrder.js";
 export const createOrder = async (req, res) => {
-    try {
-      const { customerName, email, books } = req.body;
-      if (!customerName || !email || !books || books.length === 0) {
-        return res.status(400).json({ message: "All fields are required" });
-      }
-  
-      const totalAmount = books.reduce((sum, book) => sum + book.price, 0);
-  
-      const order = await BookOrder.create({
-        customerName,
-        email,
-        books,
-        totalAmount,
-      });
-  
-      res.status(201).json({ message: "Order placed successfully", order });
-    } catch (error) {
-      res.status(500).json({ message: "Error placing order", error });
+  try {
+    const { customerName, email, books } = req.body;
+    console.log(req.body);
+
+    // Validate required fields
+    if (!customerName || !email || !Array.isArray(books) || books.length === 0) {
+      return res.status(400).json({ message: "All fields are required and books must be a non-empty array." });
     }
-  };
-  
+
+    // Validate each book structure
+    for (const book of books) {
+      if (!book.id || !book.name || typeof book.price !== "number" || book.price < 0) {
+        return res.status(400).json({ message: "Each book must have a valid ID, name, and a non-negative price." });
+      }
+    }
+
+    // Calculate total amount
+    const totalAmount = books.reduce((sum, book) => sum + (book.price || 0), 0);
+
+    if (isNaN(totalAmount) || totalAmount <= 0) {
+      return res.status(400).json({ message: "Total amount calculation failed. Please check book prices." });
+    }
+
+    // Create order in DB
+    const order = await BookOrder.create({
+      customerName,
+      email,
+      books,
+      totalAmount,
+    });
+
+    return res.status(201).json({ message: "Order placed successfully", order });
+
+  } catch (error) {
+    console.error("Error placing order:", error.message);
+    return res.status(500).json({ message: "Error placing order", error: error.message });
+  }
+};
+
   export const getAllOrders = async (req, res) => {
     try {
       const orders = await BookOrder.findAll();

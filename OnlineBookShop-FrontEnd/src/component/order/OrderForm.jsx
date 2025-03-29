@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Button, Typography, message, Input, Form } from "antd";
 import axios from "axios";
@@ -10,20 +10,30 @@ const OrderForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const cart = location.state?.cart || [];
-
+  const[user,setUser] =useState([]);
   // Form State
-  const [customerName, setCustomerName] = useState("");
-  const [email, setEmail] = useState("");
+  // const [customerName, setCustomerName] = useState("");
+  // const [email, setEmail] = useState("");
 
+  
+  
+  useEffect(()=>{
+    const storedUser = localStorage.getItem("user");
+  console.log(JSON.stringify(storedUser));
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Error parsing user data", error);
+      }
+    }
+  },[])
+  
   // Calculate total amount
   const totalAmount = cart.reduce((total, book) => total + book.price, 0);
 
   const placeOrder = async () => {
-    if (!customerName || !email) {
-      message.warning("Please enter your name and email.");
-      return;
-    }
-
+   
     if (cart.length === 0) {
       message.warning("No items to order.");
       return;
@@ -31,12 +41,16 @@ const OrderForm = () => {
 
     try {
       const orderData = {
-        customerName,
-        email,
-        books: cart.map((book) => ({ id: book._id, name: book.name, price: book.price })),
+        customerName: user.user.name,
+        email: user.user.email,
+        books: cart.map((book) => ({
+          id: book._id,
+          name: book.name,
+          price: book.price,
+        })),
         totalAmount,
       };
-
+          console.log(orderData);
       await axios.post("http://localhost:5000/api/order", orderData);
       message.success("Order placed successfully!");
       navigate("/home"); // Redirect to homepage after order
@@ -64,22 +78,22 @@ const OrderForm = () => {
           <div className="col-md-6">
             <Card className="p-3 shadow-sm" style={{ borderLeft: "4px solid #ff5e62" }}>
               <Form layout="vertical">
-                <Form.Item label="Customer Name" required>
+                <Form.Item label="Customer Name">
                   <Input
                     placeholder="Enter your name"
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    value={user?.user?.name}
                     className="p-2"
+                    disabled
                   />
                 </Form.Item>
 
-                <Form.Item label="Email" required>
+                <Form.Item label="Email">
                   <Input
                     type="email"
                     placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={user?.user?.email}
                     className="p-2"
+                    disabled
                   />
                 </Form.Item>
               </Form>

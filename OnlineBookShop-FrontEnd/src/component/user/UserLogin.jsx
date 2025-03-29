@@ -11,6 +11,7 @@ const UserLogin = () => {
     password: "",
   });
   const [message, setMessage] = useState("");
+  const [user,setUser]=useState([]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,7 +20,12 @@ const UserLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://127.0.0.1:4000/api/v1/login", formData);
+     const response= await axios.post("http://127.0.0.1:4000/api/v1/login", formData);
+     const data =response.data;
+     console.log(data);
+     setUser(data);
+      localStorage.setItem("user",JSON.stringify(data));
+    
       setMessage("Login successful!");
       navigate("/home");
     } catch (error) {
@@ -31,7 +37,7 @@ const UserLogin = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 bg-danger">
       <div className="card p-4 shadow-lg" style={{ width: "400px", borderRadius: "10px" }}>
         <h2 className="text-center mb-3">User Login</h2>
-        {message && <div className="alert alert-info">{message}</div>}
+        {message && <div className="alert alert-info" style={{color:'red'}}>{message}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Email</label>

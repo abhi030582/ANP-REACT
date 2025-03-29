@@ -7,6 +7,7 @@ import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 const { Title, Text } = Typography;
 
 const Index = () => {
@@ -14,9 +15,12 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
+  
 
-  const fetchData = useCallback(async () => {
-    try {
+ 
+    const fetchData = useCallback(async () => {
+
+      try {
       const response = await getBooks();
       setBookData(response.data);
     } catch (error) {
@@ -25,6 +29,17 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    console.log(storedUser);
+if (storedUser) {
+  try {
+    const parsedUser = JSON.parse(storedUser);
+    setUser(parsedUser);
+  } catch (error) {
+    console.error("Error parsing user data", error);
+  }
+}
+
     fetchData();
   }, [fetchData]);
 
@@ -78,11 +93,12 @@ const Index = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              {['Home', 'Login', 'Reviews', 'Contact'].map((item, index) => (
+              {['Home','Contact','Profile'].map((item, index) => (
+                
                 <li className="nav-item" key={index}>
                   <Link 
                     className="nav-link px-3 py-2 mx-1 rounded text-dark" 
-                    to={`/${item.toLowerCase().replace(/\s/g, '')}`} 
+                    to={`/${item.toLowerCase().replace(/\s/g, '')}`}
                     style={{ transition: "0.3s", backgroundColor: "#f8f9fa" }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = "red"}
                     onMouseLeave={(e) => e.target.style.backgroundColor = "#f8f9fa"}
